@@ -19,8 +19,12 @@
     Cat *_cat;
 }
 
-@property (copy) NSString* Name;
-@property (retain) Dog *Dog;
-@property (retain) Cat *Cat;
+@property (nonatomic,copy) NSString* Name;
+@property (nonatomic,retain) Dog *Dog;
+@property (nonatomic,retain) Cat *Cat;
+
++ (id) person;
+
++ (id) personWithName:(NSString *)name andDog:(Dog *)dog andCat:(Cat *)cat;
 
 @end

@@ -224,8 +224,7 @@ void stringOperation2()
 #pragma mark 数组操作
 void arrayOperation()
 {
-    
-    Dog *d1 = [[Dog alloc] init]  ;
+    Dog *d1 = [[Dog alloc] init];
     d1.ID = 8; //[d1 setID:8];
     
     Person *p1 = [[Person alloc] init];
@@ -233,11 +232,17 @@ void arrayOperation()
     Person *p2 = [[Person alloc] init];
     p2.Name = @"李四";
     Person *p3 = [[Person alloc] init];
-    p3.Name = @"王五";
+    p3.Name = @"王五";    
+    Person *p4 = [Person person]; //静态方法初始化，带默认参数
+    Person *p5 =  [Person personWithName:@"静态带参数" andDog:d1 andCat:nil]; //带参数初始化
+    
     
     NSArray *array = [NSArray arrayWithObjects:p1,p2,p3,nil]; //静态方法不需要释放
+    array = [array arrayByAddingObject:p4] ; //添加数组元素
+    array = [array arrayByAddingObject:p5]; //添加数组元素
+    
     [array makeObjectsPerformSelector:@selector(setDog:) withObject:d1]; //每个person给一条狗
-    [d1 release];
+    [d1 release]; //需要release
     
     NSLog(@"打印数组:%@", array);
     
@@ -253,11 +258,47 @@ void arrayOperation()
          }
      }];
     
-    
-    [p1 release];
+    [p1 release]; //非autorelease 则需要 release
     [p2 release];
     [p3 release];
     
+}
+
+
+#pragma mark 可变长数组操作
+void arrayOperation2()
+{
+    NSMutableArray *mArray = [NSMutableArray array];
+    
+    Dog *d = [[[Dog alloc]init]autorelease];
+    d.ID = 9;
+    Person *p1 = [Person personWithName:@"甲" andDog:nil andCat:nil];
+    Person *p2 = [Person personWithName:@"乙" andDog:nil andCat:nil];
+    
+    [mArray addObject:p1];
+    [mArray addObject:p2];
+    
+    //[mArray release]; 不需要release否则报错
+}
+
+
+#pragma mark 哈希表操作
+void dictionaryOperation()
+{
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
+                           @"value1嗯嗯",@"key1",
+                           @"value2嘻嘻",@"key2",
+                           @"value3呵呵",@"key3",
+                           @"value4哈哈",@"key4", nil];
+    
+    NSLog(@"长度：%zi", dict.count);
+    
+    id obj = [dict objectForKey:@"key1"];
+    NSLog(@"对象为：%@",obj );
+    
+    [dict enumerateKeysAndObjectsUsingBlock:^(id  key, id  obj, BOOL * stop) {
+        NSLog(@"%@=%@", key, obj);
+    }];
     
 }
 
@@ -265,7 +306,7 @@ void arrayOperation()
 int main(int argc, const char * argv[]) {
     
     @autoreleasepool {
-        arrayOperation();
+        dictionaryOperation();
     }
     
     return 0;

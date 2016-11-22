@@ -18,6 +18,36 @@
 @synthesize Dog = _dog;
 @synthesize Cat = _cat;
 
+
+#pragma mark - 生命周期方法
+
+
+
+#pragma mark - 公共方法
+#pragma mark 静态方法初始化
++ (id) person
+{
+    Person *p =  [[[self alloc] init] autorelease];
+    if(p){
+        p.Name = @"未知";
+    }
+    return p;
+}
+
+#pragma mark 参数初始化
++ (id) personWithName:(NSString *)name andDog:(Dog *)dog andCat:(Cat *)cat
+{
+    Person *p = [Person person];
+    if(p){
+        p.Name = name;
+        p.Dog = dog;
+        p.Cat = cat;
+    }
+    return p;
+}
+
+
+
 - (void) setDog:(Dog *)aDog
 {
     if(_dog != aDog  ){
@@ -64,13 +94,9 @@
 {
     NSLog(@"Person %@ is dealloc", _name);
     
-  
-    self.Dog = nil; // =[_dog release]; = [self setDog:nil]
-
+    self.Dog = nil; // =[_dog release]; = [self setDog:nil]，但比后者更彻底
     self.Cat = nil;
-    
-    //NSLog(@"Dog retainCount: %lu", (unsigned long)[_dog retainCount]);
-    
+        
     [super dealloc];
 }
 
