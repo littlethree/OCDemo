@@ -15,12 +15,13 @@
     NSTimer *_timer;
     int _barkCount;
     
+    NSString *_name;
     id <MyProtocol> delegate;
 }
 
 @property int ID;
 @property int barkCount;
+@property (nonatomic,copy) NSString* Name;
 @property (assign) id <MyProtocol> delegate;
-
 
 @end

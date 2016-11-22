@@ -302,11 +302,66 @@ void dictionaryOperation()
     
 }
 
+typedef struct {
+    int year;
+    int month;
+    int day;
+} MyDate;
+
+#pragma mark 操作封装对象
+void fengzhuangOperation()
+{
+
+    CGPoint point  = CGPointMake(10, 7);
+    NSValue *value = [NSValue valueWithPoint:point];
+    NSLog(@"结构体为：%@", value);
+    
+    CGPoint point2 =  [value pointValue];
+    BOOL result = CGPointEqualToPoint(point, point2);
+    if(result){
+        NSLog(@"传入与传出相同！");
+    }
+    
+    //自定义结构体
+    MyDate myDate = {2016,11,13};
+    char *name = @encode(MyDate); //返回C语言字符串
+    NSValue *myDateValue = [NSValue value:&myDate withObjCType:name];
+    //NSLog(@"自定义结构体：%@", myDateValue);
+    MyDate newDate;
+    [myDateValue getValue:&newDate];
+    NSLog(@"自定义结构体为：%i-%i-%i", newDate.year, newDate.month, newDate.day);
+    
+}
+
+#pragma mark 反射
+void reflect()
+{
+    Class dogClass = NSClassFromString(@"Dog");
+    id dog = [[dogClass alloc] init];
+    if([dog isMemberOfClass: [Dog class]]){
+        NSLog(@"Class is %@", [dog class] );
+    }
+    
+    if([dog isKindOfClass:[NSObject class]]){
+        NSLog(@"Class is %@", [NSObject class]);
+    }
+    
+    SEL setSel =  NSSelectorFromString(@"setName:");
+    [dog performSelector:setSel withObject:@"Harry"]; //只允许传OC对象
+    
+    SEL getSel = NSSelectorFromString(@"Name");
+    id name = [dog performSelector:getSel];
+    if(name){
+        NSLog(@"Class call %@ return %@", NSStringFromSelector(getSel), name);
+    }
+    [dog release];
+}
+
 
 int main(int argc, const char * argv[]) {
     
     @autoreleasepool {
-        dictionaryOperation();
+        reflect();
     }
     
     return 0;

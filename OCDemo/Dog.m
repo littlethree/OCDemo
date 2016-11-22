@@ -11,6 +11,7 @@
 
 @synthesize ID = _ID;
 @synthesize barkCount = _barkCount;
+@synthesize Name = _name;
 @synthesize delegate;
 
 //初始化
